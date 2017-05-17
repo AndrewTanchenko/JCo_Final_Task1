@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+import static java.util.Collections.reverse;
+
+public class TextAnalyzer {
+
+    public static ArrayList<String> getWords(String text){
+        ArrayList<String> words = new ArrayList<String>(100);
+        StringTokenizer tokenizer = new StringTokenizer(text, " (){}[]<>#*!?.,:; -\' \"/");
+        while (tokenizer.hasMoreTokens()) {
+            String word = tokenizer.nextToken();
+            words.add(word.toLowerCase());
+        }
+        return words;
+    }
+
+    public static String getFirstNonRepeatWord(String text){
+        ArrayList<String> words = getWords(text);
+        ArrayList<Integer> freq = getFrequency(text);
+        int index = freq.indexOf(1);
+        String res =words.get(index);
+        return res;
+    }
+
+    public static String getLastNonRepeatWord(String text){
+        ArrayList<String> words = getWords(text);
+        ArrayList<Integer> freq = getFrequency(text);
+        int index = freq.lastIndexOf(1);
+        String res =words.get(index);
+        return res;
+    }
+
+    public static ArrayList<Integer> getFrequency(String text){
+        ArrayList<String> words = getWords(text);
+        ArrayList<Integer> freq =new ArrayList<>(100);
+        int i=0;
+        for(String word: words) {
+            freq.add(Collections.frequency(words,word));
+            i++;
+        }
+        return freq;
+    }
+
+    public static ArrayList<String> getReversWords(String text){
+        ArrayList<String> words = getWords(text);
+        reverse(words);
+        return words;
+    }
+
+    public static ArrayList<String> getReversWordsFull(String text){
+        String[] words = text.split(" ");
+        ArrayList<String> reversWords = new ArrayList<>(100);
+        for(String word: words) reversWords.add(word);
+        reverse(reversWords);
+        return reversWords;
+    }
+
+    public static String getReversText(String text){
+        ArrayList<String> reversWords =getReversWordsFull(text);
+        String reverseText="";
+        for (String word: reversWords) {reverseText+=" "+word;}
+        return reverseText;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    public static void main(String[] args){
+        String text = "ab AB are v v v2 f ew. ddf/ erew, dfd !";
+
+        ArrayList<String> words = getWords(text);
+        ArrayList<String> reverseWords = getReversWords(text);
+        ArrayList<String> reverseWords2 = getReversWordsFull(text);
+        String reverseText = getReversText(text);
+
+        ArrayList<Integer> freq = getFrequency(text);
+
+        System.out.println(text);
+        System.out.println(words);
+        System.out.println(freq);
+        System.out.println(getFirstNonRepeatWord(text));
+        System.out.println(getLastNonRepeatWord(text));
+
+
+        System.out.println(reverseWords);
+        System.out.println(reverseWords2);
+        System.out.println(reverseText);
+
+
+
+
+    }
+}
