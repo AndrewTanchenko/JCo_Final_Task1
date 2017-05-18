@@ -1,7 +1,11 @@
+import com.sun.deploy.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 import static java.util.Collections.reverse;
+import static java.util.Collections.shuffle;
 
 public class TextAnalyzer {
 
@@ -63,6 +67,45 @@ public class TextAnalyzer {
         return reverseText;
     }
 
+    public static String removeChars(String inputString, String removeString){
+        return inputString.replaceAll(removeString,"");
+    }
+
+    public static char[] getChars(String inputString){
+        return inputString.toCharArray();
+    }
+
+    public static String getUniqueChars(String inputString){
+        HashSet<String> charsList = new HashSet<String>(inputString.length());
+        for(char ch: getChars(inputString)) charsList.add(""+ch);
+        return StringUtils.join(charsList,"");
+    }
+
+    public static int factorial(int n) {
+        if (n == 0) return 1;
+        return n * factorial(n-1);
+    }
+
+    public static int getNumCombin(String inputString){
+        return factorial(getUniqueChars(inputString).length());
+    }
+
+    public static HashSet<String> getPermutations (String inputString){
+        ArrayList charsList = new ArrayList(inputString.length());
+        HashSet retList = new HashSet(getNumCombin(inputString));
+        for(char ch: getChars(inputString)) charsList.add(""+ch);
+        while (retList.size()<getNumCombin(inputString)){
+            shuffle(charsList);
+            String str = StringUtils.join(charsList,"");
+            retList.add(str);
+        }
+        return retList;
+    }
+
+    public static void printAllPermulations (String text){
+        System.out.println("\n>>> Posible combinations for \""+text+"\" /"+getNumCombin(text)+"/ :");
+        for(String comb: getPermutations(text)) System.out.println(comb);
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args){
@@ -86,8 +129,12 @@ public class TextAnalyzer {
         System.out.println(reverseWords2);
         System.out.println(reverseText);
 
+        System.out.println(removeChars("abcd ef","c"));
 
 
-
+        System.out.println(getNumCombin("11 23"));
+        System.out.println(getPermutations("11 23"));
+        printAllPermulations("11 2a");
+        
     }
 }
